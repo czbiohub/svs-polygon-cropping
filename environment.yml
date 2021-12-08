@@ -1,0 +1,48 @@
+# You can use this file to create a conda environment for this pipeline:
+#   conda env create -f environment.yml
+name: svs-polygon-cropping
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - conda-forge::python=3.9
+  - conda-forge::napari=0.4.10
+  - conda-forge::python.app
+  - conda-forge::libvips=8.11.1
+  - conda-forge::pyvips=2.1.15
+  - ipython_genutils
+  - conda-forge::pyinstaller
+  - pip=21.2.4
+  - pip:
+    - appdirs>=1.4.4
+    - decorator<5,>=4.3
+    - importlib-metadata==3.10.1
+    - imageio-ffmpeg
+    - jupyter-client<7.0
+    - magicgui
+    - numpy>=1.10
+    - pandas
+    - Pillow>=8.1.2
+    - psutil>=5.0
+    - PyOpenGL>=3.1.0
+    - PyYAML>=5.1
+#    - pyvips
+    - scipy>=1.2.0
+    - scikit-image>=0.17.2
+    - toolz>=0.10.0
+    - tqdm
+    - vispy>=0.7.3
+    - wrapt>=1.11.1
+    - cachey>=0.2.1
+    - dask[array]>=2.1.0,!=2.28.0  # https://github.com/napari/napari/issues/1656
+    - jsonschema>=3.2.0
+    - napari-plugin-engine>=0.1.9
+    - napari-svg>=0.1.4
+    - numpydoc>=0.9.2
+    - pydantic>=1.8.1
+    - tifffile>=2020.2.16
+    - typing_extensions
+    - numpy>=0.1.19
+    - zarr==2.2.0
+    - PyQt5
+    - openslide-python==1.1.2
