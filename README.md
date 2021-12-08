@@ -3,6 +3,7 @@ A plugin that supports .svs images and allows cropping polygonal segments out in
 
 ## Required
 Make sure your system has the following installed: <br>
+- [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - [Conda](https://docs.conda.io/en/latest/miniconda.html)
 
 ## Setup
