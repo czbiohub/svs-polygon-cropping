@@ -1,3 +1,4 @@
+import json
 from ctypes import ArgumentError
 from pathlib import Path
 from typing import Any, Dict, Mapping, MutableMapping
@@ -5,16 +6,14 @@ from typing import Any, Dict, Mapping, MutableMapping
 import numpy as np
 from openslide import OpenSlide
 from zarr.storage import _path_to_prefix, attrs_key, init_array, init_group
-# from zarr.util import json_dumps, normalize_storage_path
 from zarr.util import normalize_storage_path
-import json
+
 
 def init_attrs(store: MutableMapping, attrs: Mapping[str, Any], path: str = None):
     path = normalize_storage_path(path)
     path = _path_to_prefix(path)
-    # store[path + attrs_key] = json_dumps(attrs)
-    store[path + attrs_key] = json.dumps(attrs,indent=4, sort_keys=True, ensure_ascii=True,
-                      separators=(',', ': ')).encode('ascii')
+    store[path + attrs_key] = json.dumps(attrs, indent=4, sort_keys=True, ensure_ascii=True,
+                                         separators=(',', ': ')).encode('ascii')
 
 
 def create_meta_store(slide: OpenSlide, tilesize: int) -> Dict[str, bytes]:
@@ -94,8 +93,8 @@ class OpenSlideStore(Mapping):
 
     def __eq__(self, other):
         return (
-            isinstance(other, OpenSlideStore)
-            and self._slide._filename == other._slide._filename
+                isinstance(other, OpenSlideStore)
+                and self._slide._filename == other._slide._filename
         )
 
     def __iter__(self):

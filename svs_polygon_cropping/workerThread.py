@@ -27,7 +27,6 @@ class WorkerSignals(QObject):
     finished = pyqtSignal()
     error = pyqtSignal(tuple)
     result = pyqtSignal(str)
-    # progress = pyqtSignal(int)
 
 
 class Worker(QRunnable):
@@ -45,15 +44,11 @@ class Worker(QRunnable):
     '''
 
     def __init__(self, fn, *args, **kwargs):
-        super(Worker, self).__init__()
-
         # Store constructor arguments (re-used for processing)
         self.fn = fn
         self.args = args
         self.kwargs = kwargs
         self.signals = WorkerSignals()
-        # Add the callback to our kwargs
-        # self.kwargs['progress_callback'] = self.signals.progress
 
     @pyqtSlot()
     def run(self):

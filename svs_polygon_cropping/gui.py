@@ -1,6 +1,8 @@
-from qtpy.QtWidgets import QWidget, QPushButton, QLineEdit, QVBoxLayout
 from PyQt5.QtCore import QThreadPool
+from qtpy.QtWidgets import QWidget, QPushButton, QLineEdit, QVBoxLayout
+
 from ._key_bindings import crop_tissue
+
 
 class CropWidget(QWidget):
     def __init__(self, napari_viewer):
@@ -32,7 +34,6 @@ class CropWidget(QWidget):
         crop_tissue_btn.setToolTip("Crop out only 1 tissue over which polygon is drawn")
         layout.addWidget(crop_tissue_btn)
         self.crop_tissue_btn = crop_tissue_btn
-
 
         self.setLayout(layout)
 

@@ -2,48 +2,14 @@
 import os
 
 import pyvips
-import logging
-from datetime import datetime
 
-from napari.utils.notifications import (
-    Notification,
-    notification_manager,
-    show_info,
-)
-from .workerThread import (
-    Worker
-)
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-# create file handler which logs even info messages
-now = datetime.now()
-date_time = now.strftime("%m_%d_%Y_%H_%M_%S")
-fh = logging.FileHandler('svs_crops_{}.log'.format(date_time), 'w')
-logging.basicConfig(
-    format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
-    datefmt='%Y-%m-%d:%H:%M:%S',
-    level=logging.INFO)
-formatter = logging.Formatter('%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s')
-fh.setLevel(logging.INFO)
-fh.setFormatter(formatter)
-logger.addHandler(fh)
-TILE_SIZE = 512
-
-
-def notify(message):
-    with notification_manager:
-        # save all of the events that get emitted
-        store: List[Notification] = []  # noqa
-        _append = lambda e: store.append(e)  # lambda needed on py3.6  # noqa
-        notification_manager.notification_ready.connect(_append)
-        show_info(message)
-    logger.info(message)
+from .log_writer import notify
+from .workerThread import Worker
 
 
 def crop_tissue(viewer, tissue_name, threadpool):
     layers = viewer.layers
-    image_layer = layers["he"]
+    image_layer = layers["image"]
     dirname = os.path.dirname(image_layer.metadata['path'])
 
     if "Shapes" not in layers or layers["Shapes"].nshapes < 1:
@@ -74,34 +40,21 @@ def crop_tissue(viewer, tissue_name, threadpool):
         cropped = temp.bandjoin(mask)
         cropped2 = cropped.flatten(background=[244.0, 244.0, 243.0])  # the white color from most slides background
 
-        os.makedirs(os.path.join(dirname, "he_crops"), exist_ok=True)
+        os.makedirs(os.path.join(dirname, "image_crops"), exist_ok=True)
         notify("Starting cropping tissue: " + tissue_name)
 
         worker = Worker(
             save_file, cropped2, dirname, image_layer, tissue_name
         )  # Any other args, kwargs are passed to the run function
 
-        worker.signals.result.connect(returned)
-        worker.signals.finished.connect(finished)
-
         # Execute
         threadpool.start(worker)
 
 
-def finished():
-    logger.info("finished")
-
-
-def returned(tissue_name):
-    logger.info("returned " + tissue_name)
-
-
 def save_file(cropped, dir_name, image_layer, tissue_name):
-
     # If .tif is the preferred output format
     # cropped.write_to_file(os.path.join(dir_name, "he_crops", image_layer.metadata['filename']
     #                                    + "_" + tissue_name + '.tiff'), pyramid=True, tile=True, compression=i)
-    cropped.dzsave(os.path.join(dir_name, "he_crops", image_layer.metadata['filename']
+    cropped.dzsave(os.path.join(dir_name, "image_crops", image_layer.metadata['filename']
                                 + "_" + tissue_name))
     return tissue_name
-

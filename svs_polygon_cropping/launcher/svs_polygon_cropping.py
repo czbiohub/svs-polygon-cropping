@@ -1,5 +1,6 @@
 import napari
 
+
 def launch_viewer():
     napari.Viewer()
     napari.run()

@@ -10,8 +10,8 @@ def read(fname):
     file_path = os.path.join(os.path.dirname(__file__), fname)
     return codecs.open(file_path, encoding="utf-8").read()
 
+
 # https://github.com/pypa/setuptools_scm
-use_scm = {"write_to": "svs_polygon_cropping/_version.py"}
 setup(
     name="svs-polygon-cropping",
     author="Pranathi Vemuri, Snigdha Agarwal",
@@ -23,7 +23,6 @@ setup(
     long_description_content_type="text/markdown",
     packages=find_packages(),
     python_requires=">=3.9",
-    use_scm_version=use_scm,
     setup_requires=["setuptools_scm"],
     classifiers=[
         "Development Status :: 4 - Beta",
